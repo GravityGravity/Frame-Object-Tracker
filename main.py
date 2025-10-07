@@ -55,11 +55,8 @@ def main():
         if curImg is None or nxtImg is None:
             sys.exit('ERROR: Could not read image or video read ended')
 
-        Width = Xpos - Width
-        Height = Ypos - Height
-
         cv.rectangle(curImg, (Xpos, Ypos),
-                     (Width, Height), (255, 0, 0), 3)
+                     ((Xpos + Width), (Ypos + Height)), (255, 0, 0), 3)
 
         print(f'{Xpos} {Ypos} {Width} {Height}')
 
