@@ -48,24 +48,43 @@ def main():
             break
 
         # Current image that was processed
-        curImg = cv.imread(curPathItr, cv.IMREAD_COLOR_BGR)
+        curImg = cv.imread(curPathItr, cv.IMREAD_GRAYSCALE)
         # Next image being processed and compared to first
-        nxtImg = cv.imread(nxtPathItr, cv.IMREAD_COLOR_BGR)
+        nxtImg = cv.imread(nxtPathItr, cv.IMREAD_GRAYSCALE)
+
+        curImgClr = cv.imread(curPathItr, cv.IMREAD_COLOR_BGR)
+        nxtImgClr = cv.imread(nxtPathItr, cv.IMREAD_COLOR_BGR)
 
         if curImg is None or nxtImg is None:
             sys.exit('ERROR: Could not read image or video read ended')
 
-        cv.rectangle(curImg, (Xpos, Ypos),
+        # Create list of edges used in optical flow for object tracking
+        features = cv.goodFeaturesToTrack(curImg, 50, 0.01, 20)
+
+        # Convert FP to int for int operations
+        features = features.astype(int)
+
+        print(features)
+
+        # DEBUG: Print what corners are detected from cv.goodfeaturestotrack()
+        for corner in features:
+            print(corner[0, :])
+            cv.circle(curImgClr, (corner[0, :]), 10, (0, 255, 0), 1, cv.FILLED)
+        # cv.calcOpticalFlowPyrLK(curImg, nxtImg, )
+
+        cv.rectangle(curImgClr, (Xpos, Ypos),
                      ((Xpos + Width), (Ypos + Height)), (255, 0, 0), 3)
 
+        # Print Rectangle Object Highlight Coordinates
         print(f'{Xpos} {Ypos} {Width} {Height}')
 
-        cv.imshow(f'frame{i}', curImg)
+        cv.imshow(f'frame{i}', curImgClr)
 
         quitKey = cv.waitKey(0) & 0xFF
         if quitKey == ord('q') or quitKey == ord('Q'):
             break
 
+    # DEBUG: Formatting
     print()
 
     return 0
