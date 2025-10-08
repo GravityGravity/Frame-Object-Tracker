@@ -40,10 +40,13 @@ def main():
 
     # DEBUG:  Print videoPath and Initial Rectangle parsed data
     print(f'videoPath: {videoPath}')
-    print(f'initial rectangle: {initRect}')
+    print(f'initial rectangle: {initRect}\n')
 
-    # Read image and Check image was read
-    for i in range(29):
+    # Crop to focus on area around object in image
+
+    # LOOP: Using image processing process Current Frame + Next Frame -> Output Object Highlightf for 30 frames
+    for i in range(3):
+
         # DEBUG: Print current frame and next frame video path
         curPathItr = videoPath + f'\\frame{i}.png'
         nxtPathItr = videoPath + f'\\frame{i+1}.png'
@@ -55,11 +58,23 @@ def main():
         curImg = cv.imread(curPathItr, cv.IMREAD_GRAYSCALE)
         nxtImg = cv.imread(nxtPathItr, cv.IMREAD_GRAYSCALE)
 
+        # DEBUG: Colored Frames
         curImgClr = cv.imread(curPathItr, cv.IMREAD_COLOR_BGR)
         nxtImgClr = cv.imread(nxtPathItr, cv.IMREAD_COLOR_BGR)
 
         if curImg is None or nxtImg is None:
             sys.exit('ERROR: Could not read image or video read ended')
+
+        # Crop to focus on area around object in image
+        # Bottom Right Rectangle Crop
+        x_br, y_br = (Xpos + Width) * 2, (Ypos + Height) * 2
+        x_tl, y_tl = Xpos  # Top Left Rectangle Crop
+
+        # print(f'{x_start}, {y_start}, {x_delta}, {y_delta}')
+
+        # DEBUG: Crop on image focus area
+        # cv.rectangle(curImgClr, (x_start, y_start),
+        #              ((Xpos + Width), (Ypos + Height)), (255, 0, 0), 3)
 
         # Create list of edges used in optical flow for object tracking
         features = cv.goodFeaturesToTrack(curImg, 50, 0.01, 20)
@@ -88,8 +103,10 @@ def main():
         #        Press any other key to display next frame
         quitKey = cv.waitKey(0) & 0xFF
         if quitKey == ord('q') or quitKey == ord('Q'):
+            print(
+                '\n !!!!!   SYSTEM: user quit frame-by-frame using key press q/Q !!!!!\n')
             cv.destroyAllWindows()
-            break
+            return 0
 
     # DEBUG: Formatting
     print()
