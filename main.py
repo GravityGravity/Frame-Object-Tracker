@@ -42,10 +42,16 @@ def main():
     print(f'videoPath: {videoPath}')
     print(f'initial rectangle: {initRect}\n')
 
-    # Crop to focus on area around object in image
+    # Crop for template image using initial rectangle
+    y_end = Ypos + Height
+    x_end = Xpos + Width
+    frame0img = cv.imread(videoPath + '\\frame0.png' , cv.IMREAD_GRAYSCALE)
+    templateImg = frame0img[Ypos:y_end, Xpos:x_end]
+
+    cv.imshow('template', templateImg)
 
     # LOOP: Using image processing process Current Frame + Next Frame -> Output Object Highlightf for 30 frames
-    for i in range(3):
+    for i in range(29):
 
         # DEBUG: Print current frame and next frame video path
         curPathItr = videoPath + f'\\frame{i}.png'
@@ -65,39 +71,27 @@ def main():
         if curImg is None or nxtImg is None:
             sys.exit('ERROR: Could not read image or video read ended')
 
-        # Crop to focus on area around object in image
-        # Bottom Right Rectangle Crop
-        x_br, y_br = (Xpos + Width) * 2, (Ypos + Height) * 2
-        x_tl, y_tl = Xpos  # Top Left Rectangle Crop
+        matchloc = cv.matchTemplate(nxtImg, templateImg, cv.TM_CCOEFF_NORMED)
+        print('Location Match for Template')
 
-        # print(f'{x_start}, {y_start}, {x_delta}, {y_delta}')
+        minval, maxval, minloc, maxloc = cv.minMaxLoc(matchloc)
 
-        # DEBUG: Crop on image focus area
-        # cv.rectangle(curImgClr, (x_start, y_start),
-        #              ((Xpos + Width), (Ypos + Height)), (255, 0, 0), 3)
+        topleft = maxloc
+        bottomright = (topleft[0] + Width, topleft[1] + Height)
 
-        # Create list of edges used in optical flow for object tracking
-        features = cv.goodFeaturesToTrack(curImg, 50, 0.01, 20)
-
-        # Convert FP to int for int operations
-        features = features.astype(int)
-        print(features)  # DEBUG
-
-        # DEBUG: Print what corners are detected from cv.goodfeaturestotrack()
-        for corner in features:
-            print(corner[0, :])
-            cv.circle(curImgClr, (corner[0, :]), 10, (0, 255, 0), 1, cv.FILLED)
-
-        # cv.calcOpticalFlowPyrLK(curImg, nxtImg, )
-
+        print(f'minval:{minval}, maxval:{maxval}, minloc:{minloc}, maxloc:{maxloc}')
+    
+        cv.rectangle(nxtImgClr, topleft,
+                     bottomright, (255, 0, 0), 3)
+        
         cv.rectangle(curImgClr, (Xpos, Ypos),
                      ((Xpos + Width), (Ypos + Height)), (255, 0, 0), 3)
 
         # Print Rectangle Object Highlight Coordinates
-        print(f'{Xpos} {Ypos} {Width} {Height}')
+        print(f'{Xpos} {Ypos} {Width} {Height}\n')
 
         # DEBUG: Display Frame Data like [Corners, Object Box]
-        cv.imshow(f'frame{i}', curImgClr)
+        cv.imshow(f'nxtframe{i}', nxtImgClr)
 
         # DEBUG: Press Q/q to close all windows and exit loop
         #        Press any other key to display next frame
