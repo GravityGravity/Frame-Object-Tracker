@@ -37,14 +37,12 @@ def main():
 
     # Read image and Check image was read
     for i in range(29):
+        # DEBUG: Print current frame and next frame video path
         curPathItr = videoPath + f'\\frame{i}.png'
         nxtPathItr = videoPath + f'\\frame{i+1}.png'
 
         # DEBUG: Print i itr for loop
         print(f'({i})   curPath: {curPathItr}')
-
-        if quitKey == ord('q'):
-            break
 
         # Current image that was processed
         curImg = cv.imread(curPathItr, cv.IMREAD_GRAYSCALE)
@@ -77,10 +75,14 @@ def main():
         # Print Rectangle Object Highlight Coordinates
         print(f'{Xpos} {Ypos} {Width} {Height}')
 
+        # DEBUG: Display Frame Data like [Corners, Object Box]
         cv.imshow(f'frame{i}', curImgClr)
 
+        # DEBUG: Press Q/q to close all windows and exit loop
+        #        Press any other key to display next frame
         quitKey = cv.waitKey(0) & 0xFF
         if quitKey == ord('q') or quitKey == ord('Q'):
+            cv.destroyAllWindows()
             break
 
     # DEBUG: Formatting
