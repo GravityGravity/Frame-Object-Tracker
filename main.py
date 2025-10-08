@@ -20,6 +20,7 @@ def main():
         print(f'Image path passed: {sys.argv[1]}')
         videoPath = sys.argv[1]
 
+        # Parse frame0 given object coordinates from txt file
         with open(videoPath + '\\rect.txt', "r", encoding='utf-8') as file:
             initRect = file.read()
             initRect = initRect.split()
@@ -28,13 +29,11 @@ def main():
             Xpos, Ypos, Width, Height = initRect
 
     except IndexError:
-        sys.exit('ERROR: No Argument for image path')
+        sys.exit('ERROR: Invalid Argument for image path')
 
-    # DEBUG:  Print videoPath and Initial Rectangle
+    # DEBUG:  Print videoPath and Initial Rectangle parsed data
     print(f'videoPath: {videoPath}')
     print(f'initial rectangle: {initRect}')
-
-    quitKey = cv.waitKey(1) & 0xFF
 
     # Read image and Check image was read
     for i in range(29):
