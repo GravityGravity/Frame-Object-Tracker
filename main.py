@@ -15,10 +15,16 @@ import numpy as py
 
 def main():
 
-    # Debug: Check image path was passed
+    # DEBUG: Check image path was passed
     try:
         print(f'Image path passed: {sys.argv[1]}')
         videoPath = sys.argv[1]
+
+    except FileNotFoundError:
+        sys.exit('ERROR: Invalid Argument for image path')
+
+    # DEBUG: Check if initial object coordinates txt file was passed
+    try:
 
         # Parse frame0 given object coordinates from txt file
         with open(videoPath + '\\rect.txt', "r", encoding='utf-8') as file:
@@ -28,8 +34,9 @@ def main():
 
             Xpos, Ypos, Width, Height = initRect
 
-    except IndexError:
-        sys.exit('ERROR: Invalid Argument for image path')
+    except FileNotFoundError as e:
+        sys.exit(
+            'ERROR: No initial object highlight coordinates .txt file in video directory')
 
     # DEBUG:  Print videoPath and Initial Rectangle parsed data
     print(f'videoPath: {videoPath}')
@@ -44,9 +51,8 @@ def main():
         # DEBUG: Print i itr for loop
         print(f'({i})   curPath: {curPathItr}')
 
-        # Current image that was processed
+        # Read current frame & next frame
         curImg = cv.imread(curPathItr, cv.IMREAD_GRAYSCALE)
-        # Next image being processed and compared to first
         nxtImg = cv.imread(nxtPathItr, cv.IMREAD_GRAYSCALE)
 
         curImgClr = cv.imread(curPathItr, cv.IMREAD_COLOR_BGR)
@@ -60,13 +66,13 @@ def main():
 
         # Convert FP to int for int operations
         features = features.astype(int)
-
-        print(features)
+        print(features)  # DEBUG
 
         # DEBUG: Print what corners are detected from cv.goodfeaturestotrack()
         for corner in features:
             print(corner[0, :])
             cv.circle(curImgClr, (corner[0, :]), 10, (0, 255, 0), 1, cv.FILLED)
+
         # cv.calcOpticalFlowPyrLK(curImg, nxtImg, )
 
         cv.rectangle(curImgClr, (Xpos, Ypos),
