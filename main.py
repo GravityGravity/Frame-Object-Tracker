@@ -1,17 +1,8 @@
-# Project 2: Video-Object-Tracker
+# Video-Object-Tracker
 
 import sys
 import cv2 as cv
 import numpy as py
-
-# PHASE 1 Test: 7 videos
-
-# PHASE 2 Test: 40 Videos
-
-# process all 30 frame videos in 10 seconds
-
-# Example Input: $ python project2.py /path/to/video/
-
 
 def main():
 
@@ -42,56 +33,69 @@ def main():
     print(f'videoPath: {videoPath}')
     print(f'initial rectangle: {initRect}\n')
 
-    # Crop for template image using initial rectangle
+    # Coordinates to create template image using initial rectangle
     y_end = Ypos + Height
     x_end = Xpos + Width
-    frame0img = cv.imread(videoPath + '\\frame0.png' , cv.IMREAD_GRAYSCALE)
-    templateImg = frame0img[Ypos:y_end, Xpos:x_end]
-
-    cv.imshow('template', templateImg)
+    y_start = Ypos
+    x_start = Xpos
 
     # LOOP: Using image processing process Current Frame + Next Frame -> Output Object Highlightf for 30 frames
     for i in range(29):
 
-        # DEBUG: Print current frame and next frame video path
+        # DEBUG: Iterators for current frame and next frame video path
         curPathItr = videoPath + f'\\frame{i}.png'
         nxtPathItr = videoPath + f'\\frame{i+1}.png'
 
         # DEBUG: Print i itr for loop
         print(f'({i})   curPath: {curPathItr}')
 
-        # Read current frame & next frame
+        # Read current frame & next frame (using grayscale)
         curImg = cv.imread(curPathItr, cv.IMREAD_GRAYSCALE)
         nxtImg = cv.imread(nxtPathItr, cv.IMREAD_GRAYSCALE)
 
-        # DEBUG: Colored Frames
+        # Colored Frames
         curImgClr = cv.imread(curPathItr, cv.IMREAD_COLOR_BGR)
         nxtImgClr = cv.imread(nxtPathItr, cv.IMREAD_COLOR_BGR)
 
         if curImg is None or nxtImg is None:
             sys.exit('ERROR: Could not read image or video read ended')
 
+        # Create a template based on current frame for the next frame
+        templateImg = curImg[y_start:y_end, x_start:x_end]
+        cv.imshow(f'Template image{i}', templateImg)
+
+        # Analyze Next Frame with Current Frame Object Template
         matchloc = cv.matchTemplate(nxtImg, templateImg, cv.TM_CCOEFF_NORMED)
         print('Location Match for Template')
 
+        # Find pixel location of image value has max matching value
         minval, maxval, minloc, maxloc = cv.minMaxLoc(matchloc)
 
+        # Y and X deltas + start points to create Top-Left and Bottom Right rectangle points
+        #Coordinates of Top left point
         topleft = maxloc
+        y_start = topleft[1]
+        y_end = topleft[1] + Height #BR Y-axis
+
+        x_start = topleft[0]
+        x_end = topleft[0] + Width #BR X-axis
+
+        # Coordinates form of Bottom Right Point
         bottomright = (topleft[0] + Width, topleft[1] + Height)
 
-        print(f'minval:{minval}, maxval:{maxval}, minloc:{minloc}, maxloc:{maxloc}')
-    
+        # Debugging min,max locations/values
+        print(
+            f'minval:{minval}, maxval:{maxval}, minloc:{minloc}, maxloc:{maxloc}')
+
+        # Draw rectangle of on tracked object location
         cv.rectangle(nxtImgClr, topleft,
                      bottomright, (255, 0, 0), 3)
         
-        cv.rectangle(curImgClr, (Xpos, Ypos),
-                     ((Xpos + Width), (Ypos + Height)), (255, 0, 0), 3)
-
         # Print Rectangle Object Highlight Coordinates
         print(f'{Xpos} {Ypos} {Width} {Height}\n')
 
         # DEBUG: Display Frame Data like [Corners, Object Box]
-        cv.imshow(f'nxtframe{i}', nxtImgClr)
+        cv.imshow(f'nxtframe{i+1}', nxtImgClr)
 
         # DEBUG: Press Q/q to close all windows and exit loop
         #        Press any other key to display next frame
