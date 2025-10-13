@@ -106,7 +106,7 @@ def main():
             cv.destroyAllWindows()
             return 0
 
-    # DEBUG: Formatting
+    # Terminal Formatting
     print()
 
     return 0
