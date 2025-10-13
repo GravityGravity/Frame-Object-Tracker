@@ -92,7 +92,7 @@ def main():
                      bottomright, (255, 0, 0), 3)
         
         # Print Rectangle Object Highlight Coordinates
-        print(f'{Xpos} {Ypos} {Width} {Height}\n')
+        print(f'{x_start} {y_start} {Width} {Height}')
 
         # DEBUG: Display Frame Data like [Corners, Object Box]
         cv.imshow(f'nxtframe{i+1}', nxtImgClr)
