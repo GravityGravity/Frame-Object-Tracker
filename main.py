@@ -87,7 +87,7 @@ def main():
         print(
             f'minval:{minval}, maxval:{maxval}, minloc:{minloc}, maxloc:{maxloc}')
 
-        # Draw rectangle of on tracked object location
+        # Draw rectangle of predicted object location
         cv.rectangle(nxtImgClr, topleft,
                      bottomright, (255, 0, 0), 3)
         
