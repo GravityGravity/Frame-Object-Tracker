@@ -8,7 +8,7 @@
 **Frame-Object-Tracker** is a lightweight computer vision project that detects and tracks a single object across **30 consecutive video frames** using **OpenCV** and **NumPy**.  
 It demonstrates essential skills in video frame processing, bounding box tracking, and step-by-step frame visualization in Python.
 
----
+
 
 ## 🚀 Quick Overview
 
@@ -17,7 +17,7 @@ It demonstrates essential skills in video frame processing, bounding box trackin
 - Displays each frame interactively with a bounding box update.  
 - Saves output frames for later review in the `output/` folder.  
 
----
+
 
 ## 🧠 How It Works
 
@@ -28,7 +28,6 @@ It demonstrates essential skills in video frame processing, bounding box trackin
 5. Saves processed frames with bounding boxes to `output/`.
 
 ---
-
 ## ⚙️ Input Details
 
 All test cases follow these constraints:
@@ -37,7 +36,7 @@ All test cases follow these constraints:
 - **Object:** always visible (no occlusion)  
 - **Bounding boxes:** overlap between consecutive frames  
 
----
+
 
 ## 💻 Run the Project
 
