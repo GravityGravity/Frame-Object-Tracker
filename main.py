@@ -1,8 +1,19 @@
-# Video-Object-Tracker
+# FILE: Main.py - Script for Frame-Object-Tracker
+#
+# Description:
+"""
+This script runs the object tracking process on a 30-frame video sequence.
+It loads frames from the given input path, tracks the target object across
+all frames, and produces the output with the object bounding box
 
+Example:
+    Input folder: C:\_repos\CompVision\Frame-Object-Tracker\tests\4
+    Run command:  python main.py C:\_repos\CompVision\Frame-Object-Tracker\tests\4
+"""
 import sys
 import cv2 as cv
 import numpy as py
+
 
 def main():
 
@@ -72,13 +83,13 @@ def main():
         minval, maxval, minloc, maxloc = cv.minMaxLoc(matchloc)
 
         # Y and X deltas + start points to create Top-Left and Bottom Right rectangle points
-        #Coordinates of Top left point
+        # Coordinates of Top left point
         topleft = maxloc
         y_start = topleft[1]
-        y_end = topleft[1] + Height #BR Y-axis
+        y_end = topleft[1] + Height  # BR Y-axis
 
         x_start = topleft[0]
-        x_end = topleft[0] + Width #BR X-axis
+        x_end = topleft[0] + Width  # BR X-axis
 
         # Coordinates form of Bottom Right Point
         bottomright = (topleft[0] + Width, topleft[1] + Height)
@@ -90,7 +101,7 @@ def main():
         # Draw rectangle of predicted object location
         cv.rectangle(nxtImgClr, topleft,
                      bottomright, (255, 0, 0), 3)
-        
+
         # Print Rectangle Object Highlight Coordinates
         print(f'{x_start} {y_start} {Width} {Height}')
 
