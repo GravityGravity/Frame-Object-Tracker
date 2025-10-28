@@ -18,7 +18,7 @@ It demonstrates essential skills in video frame processing, bounding box trackin
 - Displays each frame interactively with a bounding box update.  
 - Saves output frames for later review in the `output/` folder.  
 
-##📸 Example Output
+## 📸 Example Output
 <p align="center">
   <img src="Screenshots/frame1.png" alt="Frame 1 Track example" width="33%">
   <img src="Screenshots/frame2.png" alt="Frame 2 Track example" width="33%">
