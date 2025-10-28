@@ -9,7 +9,7 @@
 
 It demonstrates essential skills in video frame processing, bounding box tracking, and step-by-step frame visualization in Python.
 
-
+> ⚠️ This project **does not detect or identify** objects — it only **tracks** a given object whose **initial bounding box** is provided.
 
 ## Quick Overview
 
