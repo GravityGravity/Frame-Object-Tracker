@@ -11,7 +11,7 @@ It demonstrates essential skills in video frame processing, bounding box trackin
 
 
 
-## 🚀 Quick Overview
+## Quick Overview
 
 - Tracks one visible object across a short 30-frame video clip.  
 - Uses **OpenCV** for frame analysis and **NumPy** for matrix operations.  
@@ -20,7 +20,7 @@ It demonstrates essential skills in video frame processing, bounding box trackin
 
 
 
-## 🧠 How It Works
+## How It Works
 
 1. Loads 30 sequential frames from an input folder.  
 2. Initializes a bounding box around the target object.  
