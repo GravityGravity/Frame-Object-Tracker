@@ -1,4 +1,7 @@
-![Project Banner](https://via.placeholder.com/1000x250.png?text=Frame-Object-Tracker+%7C+OpenCV+%2B+NumPy)
+<p align="center">
+  <img src="Screenshots/Banner.png" alt="Frame Track Banner">
+</p>
+
 
 # 🎯 Frame-Object-Tracker
 
